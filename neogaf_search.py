@@ -3,6 +3,8 @@
 by Zhizhuo Ding'''
 import sys,urllib2
 import re
+import webbrowser
+
 
 def find_key_word(key,src):
 	#ignore the case
@@ -32,6 +34,7 @@ url = home
 current_page = 1
 
 rec = []
+index = 1
 while current_page<=maxPage:
 	#start get first page
 	req = urllib2.Request(url)
@@ -42,17 +45,35 @@ while current_page<=maxPage:
 	datalist = p.findall(alldata)
 
 	#iterate all titles found in the page
+
 	for i in datalist:
 		if find_key_word(query,i[2]):
-			rec.append( (current_page,i[2], prev+i[1]) )
+			rec.append( (index,i[2], prev+i[1]) )
+			index += 1
 	#change the url to the next page
 	current_page += 1
+
 	url = home+page+str(current_page)
 
 if rec:	
 	for i in rec:
 		print i
 		#sys.stdout.write(i)
+	length = len(rec)
+
+	while 1:
+		num = raw_input("Enter the title you want to read: ")
+		num = int(num)
+		if num <= 0:
+			print "Exiting....."
+			sys.exit()
+
+		elif num >= length:
+			print "Out of Range\n"
+			continue
+		else:
+			webbrowser.open_new_tab(rec[num-1][2])
+			break
 else:
 	print "Can't find the topic"
 	#sys.stdout.write("Can't find the topic")
