@@ -73,7 +73,7 @@ if rec:
 			continue
 		else:
 			webbrowser.open_new_tab(rec[num-1][2])
-			break
+			#break
 else:
 	print "Can't find the topic"
 	#sys.stdout.write("Can't find the topic")
